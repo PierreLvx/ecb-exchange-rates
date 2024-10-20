@@ -1,7 +1,7 @@
 European Central Bank Exchange Rates API client module for NodeJS
-==================
+===
 
-This is currency converter for NodeJS - uses the European Central Bank's daily feed for accuracy
+This is currency converter for NodeJS, which uses the European Central Bank's daily feed for accuracy.
 
 # Contents
 
@@ -74,9 +74,9 @@ currencyConverter.getExchangeRate(settings , (data) => {
 
 The data object that you will receive on the callback, will contain:
 
-* toCurrency
-* fromCurrency
-* exchangeRate
+* `toCurrency`
+* `fromCurrency`
+* `exchangeRate`
 
 By instance: {"toCurrency":"USD","fromCurrency":"GBP","exchangeRate":1.64686}
 
@@ -153,4 +153,4 @@ Please report any bugs on [GitHub](https://github.com/facundofarias/ecb-exchange
 
 # License
 
-[MIT License](http: //facundofarias.mit-license.org/) © Facundo Farias
+[MIT](http://facundofarias.mit-license.org/) © Facundo Farias
