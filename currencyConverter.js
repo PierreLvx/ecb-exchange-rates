@@ -7,7 +7,7 @@ var path = require('path');
 module.exports = {
 
     settings: {
-      url: "http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml"
+      url: "https://www.ecb.int/stats/eurofxref/eurofxref-daily.xml"
     },
 
     baseCurrency: "EUR",
