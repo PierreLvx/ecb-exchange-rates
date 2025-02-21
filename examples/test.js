@@ -1,7 +1,13 @@
-var currencyConverter = require('../currencyConverter.js');
+const currencyConverter = require('../currencyConverter.js')
 
-var settings = {};
-settings.currency = "EUR";
-currencyConverter.getCurrencyMetadata(settings, function(data){
-  console.log(JSON.stringify(data));
-});
+const settings = {}
+settings.currency = "EUR"
+
+currencyConverter.getCurrencyMetadata(settings, (data) => {
+  console.log(JSON.stringify(data))
+})
+
+currencyConverter.getAllCurrencies((data) => {
+  const USDEUR = 1 / data.find(({ currency }) => currency === 'USD').rate
+  console.log(`USDEUR = ${USDEUR}`)
+})

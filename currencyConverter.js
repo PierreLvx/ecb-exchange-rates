@@ -1,5 +1,4 @@
 const xml2js = require('xml2js')
-const request = require('request')
 const _ = require('underscore')
 const fs = require('fs')
 const path = require('path')
@@ -51,13 +50,18 @@ module.exports = {
       self.executeCallback()
     },
 
-    getExchangeRates: function () {
-      const self = this
-      request(self.settings.url, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-          self.parseXML(body)
+    getExchangeRates: async function () {
+      const self = this;
+      try {
+        console.log('Fetching exchange rates...')
+        const response = await fetch(self.settings.url);
+        if (response.ok) {
+          const data = await response.text();
+          self.parseXML(data);
         }
-      })
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
 
     roundValues: function (value, places) {
