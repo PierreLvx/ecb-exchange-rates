@@ -27,7 +27,6 @@
   "homepage": "https://github.com/PierreLvx/ecb-exchange-rates/tree/master",
   "dependencies": {
     "standard": "^17.1.2",
-    "underscore": "^1.13.7",
     "xml2js": "^0.6.2"
   }
 }

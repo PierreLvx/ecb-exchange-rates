@@ -1,5 +1,4 @@
 const xml2js = require('xml2js')
-const _ = require('underscore')
 const fs = require('fs')
 const path = require('path')
 
@@ -41,9 +40,9 @@ module.exports = {
 
     createCurrenciesMap: function (currencies) {
       const self = this
-      _.each(currencies, function (item) {
-         const currency = eval('item.$').currency
-         const rate = eval('item.$').rate
+      currencies.forEach(function (item) {
+         const currency = item.$.currency
+         const rate = item.$.rate
          self.currenciesMap.push({ currency: currency, rate: rate })
       })
       self.currenciesMap.push({ currency: 'EUR', rate: 1 })
@@ -51,16 +50,16 @@ module.exports = {
     },
 
     getExchangeRates: async function () {
-      const self = this;
+      const self = this
       try {
         console.log('Fetching exchange rates...')
-        const response = await fetch(self.settings.url);
+        const response = await fetch(self.settings.url)
         if (response.ok) {
-          const data = await response.text();
-          self.parseXML(data);
+          const data = await response.text()
+          self.parseXML(data)
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
       }
     },
 
@@ -72,7 +71,7 @@ module.exports = {
     fetchRates: function (settings) {
       const self = this
       const getCurrency = function (currency) {
-        return _.find(self.currenciesMap, function (item) {
+        return self.currenciesMap.find(function (item) {
            return item.currency === currency
         })
       }
@@ -135,7 +134,7 @@ module.exports = {
 
       const self = this
       const getCurrency = function (currency) {
-        return _.find(self.currenciesMetadata, function (item) {
+        return self.currenciesMetadata.find(function (item) {
            return item.Code === currency
         })
       }
