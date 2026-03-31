@@ -48,6 +48,8 @@ module.exports = {
   fetchRates: function ({ fromCurrency, toCurrency }) {
     const fromRate = this.currenciesMap[fromCurrency]
     const toRate = this.currenciesMap[toCurrency]
+    if (!fromRate) throw new Error(`Unknown currency: ${fromCurrency}`)
+    if (!toRate) throw new Error(`Unknown currency: ${toCurrency}`)
     return {
       fromCurrency: { currency: fromCurrency, rate: fromRate },
       toCurrency: { currency: toCurrency, rate: toRate },
