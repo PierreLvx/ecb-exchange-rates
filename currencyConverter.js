@@ -76,10 +76,13 @@ module.exports = {
     return { currency: this.baseCurrency }
   },
 
-  convert: async function (settings) {
+  resolveRates: async function (settings) {
     await this.getExchangeRates()
-    const rates = this.fetchRates(settings)
-    const accuracy = settings.accuracy ?? 4
+    return { rates: this.fetchRates(settings), accuracy: settings.accuracy ?? 4 }
+  },
+
+  convert: async function (settings) {
+    const { rates, accuracy } = await this.resolveRates(settings)
     return {
       currency: rates.toCurrency.currency,
       exchangeRate: this.roundValues(rates.exchangeRate, accuracy),
@@ -88,9 +91,7 @@ module.exports = {
   },
 
   getExchangeRate: async function (settings) {
-    await this.getExchangeRates()
-    const rates = this.fetchRates(settings)
-    const accuracy = settings.accuracy ?? 4
+    const { rates, accuracy } = await this.resolveRates(settings)
     return {
       fromCurrency: rates.fromCurrency.currency,
       toCurrency: rates.toCurrency.currency,
