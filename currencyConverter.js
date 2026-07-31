@@ -15,16 +15,17 @@ module.exports = {
 
   lastFetchedAt: 0,
 
-  readJson: function () {
-    return JSON.parse(fs.readFileSync(path.resolve(__dirname, 'Currencies.json'), 'utf8'))
-  },
+  currenciesMetadata: null,
 
-  removeNamespaces: function (xml) {
-    return xml.replace(/(<\/?)(\w+:)/g, '$1').replace(/xmlns(:\w+)?="[^"]*"/g, '').trim()
+  readJson: function () {
+    if (!this.currenciesMetadata) {
+      this.currenciesMetadata = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'Currencies.json'), 'utf8'))
+    }
+    return this.currenciesMetadata
   },
 
   parseXML: async function (xml) {
-    const result = await xml2js.parseStringPromise(this.removeNamespaces(xml))
+    const result = await xml2js.parseStringPromise(xml, { tagNameProcessors: [xml2js.processors.stripPrefix] })
     const currencies = result.Envelope.Cube[0].Cube[0].Cube
     this.createCurrenciesMap(currencies)
   },
