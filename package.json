@@ -21,12 +21,17 @@
   ],
   "author": "facundo.farias@gmail.com",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "bugs": {
     "url": "https://github.com/PierreLvx/ecb-exchange-rates/issues"
   },
   "homepage": "https://github.com/PierreLvx/ecb-exchange-rates/tree/master",
   "dependencies": {
-    "standard": "^17.1.2",
     "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2"
   }
 }

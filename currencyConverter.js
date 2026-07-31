@@ -5,12 +5,15 @@ const path = require('path')
 module.exports = {
 
   settings: {
-    url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml'
+    url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
+    cacheTTL: 60 * 60 * 1000 // ECB publishes rates once per business day, so an hour is a safe default
   },
 
   baseCurrency: 'EUR',
 
   currenciesMap: {},
+
+  lastFetchedAt: 0,
 
   readJson: function () {
     return JSON.parse(fs.readFileSync(path.resolve(__dirname, 'Currencies.json'), 'utf8'))
@@ -34,10 +37,14 @@ module.exports = {
   },
 
   getExchangeRates: async function () {
+    const isCacheFresh = Date.now() - this.lastFetchedAt < this.settings.cacheTTL
+    if (isCacheFresh && Object.keys(this.currenciesMap).length) return
+
     console.log('Fetching exchange rates...')
     const response = await fetch(this.settings.url)
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     await this.parseXML(await response.text())
+    this.lastFetchedAt = Date.now()
   },
 
   roundValues: function (value, places) {
@@ -46,6 +53,8 @@ module.exports = {
   },
 
   fetchRates: function ({ fromCurrency, toCurrency }) {
+    fromCurrency = fromCurrency.toUpperCase()
+    toCurrency = toCurrency.toUpperCase()
     const fromRate = this.currenciesMap[fromCurrency]
     const toRate = this.currenciesMap[toCurrency]
     if (!fromRate) throw new Error(`Unknown currency: ${fromCurrency}`)
@@ -93,7 +102,7 @@ module.exports = {
   },
 
   getCurrencyMetadata: function ({ currency }) {
-    return this.readJson().find(item => item.Code === currency)
+    return this.readJson().find(item => item.Code === currency.toUpperCase())
   }
 
 }
