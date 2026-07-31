@@ -2,7 +2,7 @@ const xml2js = require('xml2js')
 const fs = require('fs')
 const path = require('path')
 
-module.exports = {
+const currencyConverter = {
 
   settings: {
     url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
@@ -108,3 +108,12 @@ module.exports = {
   }
 
 }
+
+// Bind every method to currencyConverter so destructured calls, e.g.
+// `const { convert } = require('ecb-exchange-rates')`, keep working.
+module.exports = Object.fromEntries(
+  Object.entries(currencyConverter).map(([key, value]) => [
+    key,
+    typeof value === 'function' ? value.bind(currencyConverter) : value
+  ])
+)
