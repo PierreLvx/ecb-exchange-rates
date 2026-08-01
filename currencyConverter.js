@@ -53,6 +53,8 @@ const currencyConverter = {
   },
 
   fetchRates: function ({ fromCurrency, toCurrency }) {
+    if (!fromCurrency) throw new Error('fromCurrency is required')
+    if (!toCurrency) throw new Error('toCurrency is required')
     fromCurrency = fromCurrency.toUpperCase()
     toCurrency = toCurrency.toUpperCase()
     const fromRate = this.currenciesMap[fromCurrency]
@@ -103,6 +105,7 @@ const currencyConverter = {
   },
 
   getCurrencyMetadata: function ({ currency }) {
+    if (!currency) throw new Error('currency is required')
     return this.readJson().find(item => item.Code === currency.toUpperCase())
   }
 
