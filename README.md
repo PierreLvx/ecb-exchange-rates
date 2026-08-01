@@ -41,12 +41,11 @@ const settings = {
 After that, we can call to the convert function in this way:
 
 ```js
-currencyConverter.convert(settings , (data) => {
-    console.log(JSON.stringify(data))
-})
+const data = await currencyConverter.convert(settings)
+console.log(JSON.stringify(data))
 ```
 
-The data object that you will receive on the callback, will contain:
+The data object that you will receive, will contain:
 
 * currency
 * exchange Rate
@@ -67,12 +66,11 @@ const settings = {
 After that, we can call to the getExchangeRate function in this way:
 
 ```js
-currencyConverter.getExchangeRate(settings , (data) => {
-    console.log(JSON.stringify(data))
-})
+const data = await currencyConverter.getExchangeRate(settings)
+console.log(JSON.stringify(data))
 ```
 
-The data object that you will receive on the callback, will contain:
+The data object that you will receive, will contain:
 
 * `toCurrency`
 * `fromCurrency`
@@ -83,9 +81,8 @@ By instance: {"toCurrency":"USD","fromCurrency":"GBP","exchangeRate":1.64686}
 In case we only need all the supported currencies with their exchange rates, we can call:
 
 ```js
-currencyConverter.getAllCurrencies((data) => {
-    console.log(JSON.stringify(data))
-})
+const data = await currencyConverter.getAllCurrencies()
+console.log(JSON.stringify(data))
 ```
 
 And it will return something like this (with the EUR as base):
@@ -97,9 +94,8 @@ And it will return something like this (with the EUR as base):
 Sometimes we need to display amounts accordingly with the currency, in that case we can call:
 
 ```js
-currencyConverter.getCurrenciesMetadata((data) => {
-    console.log(JSON.stringify(data))
-})
+const data = currencyConverter.getCurrenciesMetadata()
+console.log(JSON.stringify(data))
 ```
 
 You can also filter the result by passing a single currency as parameter.

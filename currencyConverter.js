@@ -41,7 +41,6 @@ const currencyConverter = {
     const isCacheFresh = Date.now() - this.lastFetchedAt < this.settings.cacheTTL
     if (isCacheFresh && Object.keys(this.currenciesMap).length) return
 
-    console.log('Fetching exchange rates...')
     const response = await fetch(this.settings.url)
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     await this.parseXML(await response.text())
