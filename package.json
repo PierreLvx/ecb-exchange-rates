@@ -3,8 +3,13 @@
   "version": "0.2.0",
   "description": "European Central Bank Exchange Rates API client module for nodejs",
   "main": "currencyConverter.js",
+  "files": [
+    "currencyConverter.js",
+    "Currencies.json"
+  ],
   "scripts": {
-    "test": "node examples/test.js"
+    "test": "node examples/test.js",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
