@@ -9,7 +9,8 @@ const currencyConverter = {
 
   settings: {
     url: 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
-    cacheTTL: 60 * 60 * 1000 // ECB publishes rates once per business day, so an hour is a safe default
+    cacheTTL: 60 * 60 * 1000, // ECB publishes rates once per business day, so an hour is a safe default
+    fetchTimeout: 10 * 1000
   },
 
   baseCurrency: 'EUR',
@@ -38,7 +39,7 @@ const currencyConverter = {
     const isCacheFresh = Date.now() - this.lastFetchedAt < this.settings.cacheTTL
     if (isCacheFresh && this.lastFetchedAt) return
 
-    const response = await fetch(this.settings.url)
+    const response = await fetch(this.settings.url, { signal: AbortSignal.timeout(this.settings.fetchTimeout) })
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     this.parseXML(await response.text())
     this.lastFetchedAt = Date.now()
