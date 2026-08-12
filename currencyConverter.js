@@ -36,7 +36,7 @@ const currencyConverter = {
 
   getExchangeRates: async function () {
     const isCacheFresh = Date.now() - this.lastFetchedAt < this.settings.cacheTTL
-    if (isCacheFresh && Object.keys(this.currenciesMap).length) return
+    if (isCacheFresh && this.lastFetchedAt) return
 
     const response = await fetch(this.settings.url)
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
