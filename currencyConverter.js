@@ -1,6 +1,9 @@
-const xml2js = require('xml2js')
 const fs = require('fs')
 const path = require('path')
+
+// Matches the innermost <Cube currency='USD' rate='1.1545'/> elements in the
+// ECB feed; nothing else in the feed carries both a currency and rate attribute.
+const CURRENCY_RATE_PATTERN = /<Cube currency=['"]([A-Z]{3})['"] rate=['"]([\d.]+)['"]\s*\/>/g
 
 const currencyConverter = {
 
@@ -24,17 +27,11 @@ const currencyConverter = {
     return this.currenciesMetadata
   },
 
-  parseXML: async function (xml) {
-    const result = await xml2js.parseStringPromise(xml, { tagNameProcessors: [xml2js.processors.stripPrefix] })
-    const currencies = result.Envelope.Cube[0].Cube[0].Cube
-    this.createCurrenciesMap(currencies)
-  },
-
-  createCurrenciesMap: function (currencies) {
-    this.currenciesMap = {
-      ...Object.fromEntries(currencies.map(({ $ }) => [$.currency, Number($.rate)])),
-      EUR: 1
-    }
+  parseXML: function (xml) {
+    const rates = Object.fromEntries(
+      [...xml.matchAll(CURRENCY_RATE_PATTERN)].map(([, currency, rate]) => [currency, Number(rate)])
+    )
+    this.currenciesMap = { ...rates, EUR: 1 }
   },
 
   getExchangeRates: async function () {
@@ -43,7 +40,7 @@ const currencyConverter = {
 
     const response = await fetch(this.settings.url)
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
-    await this.parseXML(await response.text())
+    this.parseXML(await response.text())
     this.lastFetchedAt = Date.now()
   },
 

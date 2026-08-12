@@ -33,9 +33,6 @@
     "url": "https://github.com/PierreLvx/ecb-exchange-rates/issues"
   },
   "homepage": "https://github.com/PierreLvx/ecb-exchange-rates/tree/master",
-  "dependencies": {
-    "xml2js": "^0.6.2"
-  },
   "devDependencies": {
     "standard": "^17.1.2"
   }
